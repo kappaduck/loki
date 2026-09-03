@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PACKAGE_ID="${1:?Usage: resolve-version.sh <package-id> <version> <branch>}"
-BASE_VERSION="${2:?Usage: resolve-version.sh <package-id> <version> <branch>}"
-BRANCH="${3:?Usage: resolve-version.sh <package-id> <version> <branch>}"
+PACKAGE_ID="${1:?Usage: resolve-version.sh <package-id> <version> <channel>}"
+BASE_VERSION="${2:?Usage: resolve-version.sh <package-id> <version> <channel>}"
+CHANNEL="${3:?Usage: resolve-version.sh <package-id> <version> <channel>}"
 
-if [[ "$BRANCH" != "develop" ]]; then
+if [[ "$CHANNEL" != "beta" ]]; then
     echo "Resolved version $BASE_VERSION"
     echo "Version=$BASE_VERSION" >> "$GITHUB_OUTPUT"
-
     exit 0
 fi
 
@@ -22,7 +21,7 @@ cat /tmp/nuget.json
 echo
 
 if [[ "$HTTP_CODE" == "404" ]]; then
-    echo "Package not found on Nuget, starting at beta.1"
+    echo "Package not found on NuGet, starting at beta.1"
     LATEST_BETA=""
 elif [[ "$HTTP_CODE" != "200" ]]; then
     echo "Error: unexpected HTTP $HTTP_CODE from NuGet. Aborting."
