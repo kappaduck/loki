@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -146,7 +147,7 @@ static string BuildTable(IEnumerable<ReleaseUpdate> updates, string heading, boo
     builder.AppendLine(heading);
     builder.AppendLine();
     builder.AppendLine("| Library | Current | Latest |");
-    builder.AppendLine("| --- | --- | --- |");
+    builder.AppendLine("| :---: | :---: | :---: |");
 
     foreach (ReleaseUpdate update in updates)
     {
@@ -154,7 +155,7 @@ static string BuildTable(IEnumerable<ReleaseUpdate> updates, string heading, boo
             ? $"[{update.Latest}](https://github.com/libsdl-org/{update.Repository}/releases/tag/release-{update.Latest})"
             : update.Latest.ToString();
 
-        builder.AppendLine($"| `{update.Key}` | {update.Current} | {latest} |");
+        builder.AppendLine(CultureInfo.InvariantCulture, $"| `{update.Key}` | {update.Current} | {latest} |");
     }
 
     return builder.ToString();
